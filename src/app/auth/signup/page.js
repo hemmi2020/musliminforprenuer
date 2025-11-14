@@ -52,7 +52,7 @@ export default function SignUp() {
     }
 
     if (!formData.acceptTerms) {
-      setError('Vous devez accepter les conditions d\\'utilisation');
+      setError('Vous devez accepter les conditions d\'utilisation');
       setIsLoading(false);
       return;
     }
@@ -94,79 +94,79 @@ export default function SignUp() {
   const passwordStrength = getPasswordStrength(formData.password);
 
   return (
-    <div className=\"min-h-screen bg-black flex items-center justify-center px-4 py-8\">
-      <Card className=\"w-full max-w-md bg-gray-900 border-gray-800\">
-        <CardHeader className=\"text-center\">
-          <CardTitle className=\"text-2xl font-bold text-white\">Créer un compte</CardTitle>
-          <CardDescription className=\"text-gray-400\">
+    <div className="min-h-screen bg-black flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-md bg-gray-900 border-gray-800">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold text-white">Créer un compte</CardTitle>
+          <CardDescription className="text-gray-400">
             Rejoignez la communauté MuslimInfopreneurs
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className=\"space-y-4\">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
-              <div className=\"bg-red-900/50 border border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm\">
+              <div className="bg-red-900/50 border border-red-600 text-red-200 px-4 py-3 rounded-lg text-sm">
                 {error}
               </div>
             )}
 
-            <div className=\"space-y-2\">
-              <label className=\"text-sm font-medium text-gray-300\">Nom complet</label>
-              <div className=\"relative\">
-                <User className=\"absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5\" />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Nom complet</label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type=\"text\"
-                  name=\"name\"
+                  type="text"
+                  name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className=\"w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500\"
-                  placeholder=\"Votre nom complet\"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
+                  placeholder="Votre nom complet"
                   required
                 />
               </div>
             </div>
 
-            <div className=\"space-y-2\">
-              <label className=\"text-sm font-medium text-gray-300\">Email</label>
-              <div className=\"relative\">
-                <Mail className=\"absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5\" />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Email</label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
-                  type=\"email\"
-                  name=\"email\"
+                  type="email"
+                  name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className=\"w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500\"
-                  placeholder=\"votre@email.com\"
+                  className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
+                  placeholder="votre@email.com"
                   required
                 />
               </div>
             </div>
 
-            <div className=\"space-y-2\">
-              <label className=\"text-sm font-medium text-gray-300\">Mot de passe</label>
-              <div className=\"relative\">
-                <Lock className=\"absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5\" />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Mot de passe</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  name=\"password\"
+                  name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className=\"w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500\"
-                  placeholder=\"Mot de passe sécurisé\"
+                  className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
+                  placeholder="Mot de passe sécurisé"
                   required
                 />
                 <button
-                  type=\"button\"
+                  type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className=\"absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white\"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 >
-                  {showPassword ? <EyeOff className=\"w-5 h-5\" /> : <Eye className=\"w-5 h-5\" />}
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
               
               {formData.password && (
-                <div className=\"space-y-2 mt-2\">
-                  <div className=\"flex gap-1\">
+                <div className="space-y-2 mt-2">
+                  <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((level) => (
                       <div
                         key={level}
@@ -182,13 +182,13 @@ export default function SignUp() {
                       />
                     ))}
                   </div>
-                  <div className=\"space-y-1\">
+                  <div className="space-y-1">
                     {passwordRequirements.map((req, index) => (
-                      <div key={index} className=\"flex items-center gap-2 text-xs\">
+                      <div key={index} className="flex items-center gap-2 text-xs">
                         {req.regex.test(formData.password) ? (
-                          <Check className=\"w-3 h-3 text-green-500\" />
+                          <Check className="w-3 h-3 text-green-500" />
                         ) : (
-                          <X className=\"w-3 h-3 text-gray-500\" />
+                          <X className="w-3 h-3 text-gray-500" />
                         )}
                         <span className={req.regex.test(formData.password) ? 'text-green-400' : 'text-gray-500'}>
                           {req.text}
@@ -200,63 +200,63 @@ export default function SignUp() {
               )}
             </div>
 
-            <div className=\"space-y-2\">
-              <label className=\"text-sm font-medium text-gray-300\">Confirmer le mot de passe</label>
-              <div className=\"relative\">
-                <Lock className=\"absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5\" />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-300">Confirmer le mot de passe</label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
                   type={showConfirmPassword ? 'text' : 'password'}
-                  name=\"confirmPassword\"
+                  name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className=\"w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500\"
-                  placeholder=\"Confirmez votre mot de passe\"
+                  className="w-full pl-10 pr-12 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-green-500"
+                  placeholder="Confirmez votre mot de passe"
                   required
                 />
                 <button
-                  type=\"button\"
+                  type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className=\"absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white\"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
                 >
-                  {showConfirmPassword ? <EyeOff className=\"w-5 h-5\" /> : <Eye className=\"w-5 h-5\" />}
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
             </div>
 
-            <div className=\"flex items-start gap-3\">
+            <div className="flex items-start gap-3">
               <input
-                type=\"checkbox\"
-                name=\"acceptTerms\"
+                type="checkbox"
+                name="acceptTerms"
                 checked={formData.acceptTerms}
                 onChange={handleChange}
-                className=\"mt-1 w-4 h-4 text-green-600 bg-gray-800 border-gray-600 rounded focus:ring-green-500\"
+                className="mt-1 w-4 h-4 text-green-600 bg-gray-800 border-gray-600 rounded focus:ring-green-500"
                 required
               />
-              <label className=\"text-sm text-gray-300\">
+              <label className="text-sm text-gray-300">
                 J'accepte les{' '}
-                <Link href=\"/terms\" className=\"text-green-400 hover:text-green-300\">
+                <Link href="/terms" className="text-green-400 hover:text-green-300">
                   conditions d'utilisation
                 </Link>{' '}
                 et la{' '}
-                <Link href=\"/privacy\" className=\"text-green-400 hover:text-green-300\">
+                <Link href="/privacy" className="text-green-400 hover:text-green-300">
                   politique de confidentialité
                 </Link>
               </label>
             </div>
 
             <Button
-              type=\"submit\"
-              className=\"w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3\"
+              type="submit"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3"
               disabled={isLoading}
             >
               {isLoading ? 'Création...' : 'Créer mon compte'}
             </Button>
           </form>
 
-          <div className=\"mt-6 text-center\">
-            <p className=\"text-gray-400 text-sm\">
+          <div className="mt-6 text-center">
+            <p className="text-gray-400 text-sm">
               Déjà un compte ?{' '}
-              <Link href=\"/auth/signin\" className=\"text-green-400 hover:text-green-300 font-medium\">
+              <Link href="/auth/signin" className="text-green-400 hover:text-green-300 font-medium">
                 Se connecter
               </Link>
             </p>
