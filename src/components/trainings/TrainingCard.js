@@ -2,115 +2,141 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent } from '../ui/card';
+import { Star, Clock, Users, Play, BookOpen, Award } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Star, Clock, Users, Play, Heart } from 'lucide-react';
-import { useState } from 'react';
+import { Card, CardContent } from '../ui/card';
 
 export default function TrainingCard({ training }) {
-  const [isLiked, setIsLiked] = useState(false);
-  const [showPreview, setShowPreview] = useState(false);
+  const {
+    id,
+    title,
+    slug,
+    thumbnail,
+    instructorName,
+    rating,
+    duration,
+    students,
+    category,
+    level,
+    isNew,
+    progress = 0
+  } = training;
+
+  const getLevelColor = (level) => {
+    switch (level?.toLowerCase()) {
+      case 'débutant':
+        return 'bg-green-100 text-green-800';
+      case 'intermédiaire':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'avancé':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getCategoryIcon = (category) => {
+    switch (category?.toLowerCase()) {
+      case 'business':
+        return <Award className="w-4 h-4" />;
+      case 'finance':
+        return <BookOpen className="w-4 h-4" />;
+      default:
+        return <BookOpen className="w-4 h-4" />;
+    }
+  };
 
   return (
-    <Card className="bg-gray-900 border-gray-800 hover:border-green-600 transition-all duration-300 group cursor-pointer overflow-hidden">
-      <CardContent className="p-0">
-        <div 
-          className="relative"
-          onMouseEnter={() => setShowPreview(true)}
-          onMouseLeave={() => setShowPreview(false)}
-        >
-          <Image
-            src={training.thumbnail}
-            alt={training.title}
-            width={400}
-            height={225}
-            className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          
-          {/* Overlay de prévisualisation */}
-          {showPreview && (
-            <div className="absolute inset-0 bg-black/70 flex items-center justify-center transition-opacity duration-300">
-              <Button size="sm" className="bg-white text-black hover:bg-gray-200">
-                <Play className="w-4 h-4 mr-2" />
-                Aperçu
-              </Button>
-            </div>
-          )}
-
-          {/* Badges */}
-          <div className="absolute top-2 left-2 flex gap-2">
-            {training.isNew && (
-              <span className="bg-green-600 text-xs px-2 py-1 rounded-full font-medium">
-                Nouveau
-              </span>
-            )}
-            {training.level && (
-              <span className="bg-black/70 text-xs px-2 py-1 rounded-full">
-                {training.level}
-              </span>
-            )}
-          </div>
-
-          {/* Bouton Like */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setIsLiked(!isLiked);
-            }}
-            className="absolute top-2 right-2 p-2 bg-black/50 rounded-full hover:bg-black/70 transition-colors"
-          >
-            <Heart 
-              className={`w-4 h-4 ${isLiked ? 'text-red-500 fill-current' : 'text-white'}`} 
-            />
-          </button>
-
-          {/* Barre de progression si commencé */}
-          {training.progress > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-600">
-              <div 
-                className="h-full bg-green-500 transition-all duration-300"
-                style={{ width: `${training.progress}%` }}
-              />
-            </div>
-          )}
-        </div>
+    <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-md overflow-hidden bg-white">
+      <div className="relative">
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={400}
+          height={240}
+          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+        />
         
-        <div className="p-4">
-          <Link href={`/trainings/${training.slug}`}>
-            <h3 className="font-semibold text-white mb-2 line-clamp-2 group-hover:text-green-400 transition-colors">
-              {training.title}
-            </h3>
-          </Link>
-          
-          <p className="text-gray-400 text-sm mb-3">{training.instructorName}</p>
-          
-          <div className="flex items-center justify-between text-sm text-gray-400 mb-3">
-            <div className="flex items-center gap-1">
-              <Star className="w-4 h-4 text-yellow-400 fill-current" />
-              <span>{training.rating}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="w-4 h-4" />
-              <span>{training.duration}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Users className="w-4 h-4" />
-              <span>{training.students}</span>
-            </div>
-          </div>
-          
-          <div className="flex items-center justify-between">
-            <span className="text-xs bg-gray-800 px-2 py-1 rounded-full text-gray-300">
-              {training.category}
+        {/* Overlay on hover */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+          <Button 
+            size="sm" 
+            className="bg-white text-gray-900 hover:bg-gray-100 shadow-lg"
+            asChild
+          >
+            <Link href={`/formations/${slug}`}>
+              <Play className="w-4 h-4 mr-2" />
+              Voir le cours
+            </Link>
+          </Button>
+        </div>
+
+        {/* Badges */}
+        <div className="absolute top-3 left-3 flex gap-2">
+          {isNew && (
+            <span className="bg-emerald-600 text-white px-2 py-1 rounded-md text-xs font-medium">
+              Nouveau
             </span>
-            <Button 
-              size="sm" 
-              variant="ghost" 
-              className="text-green-400 hover:text-green-300 hover:bg-green-900/20"
-            >
-              {training.progress > 0 ? 'Continuer' : 'Commencer'}
-            </Button>
+          )}
+          <span className="bg-white/90 backdrop-blur-sm text-gray-700 px-2 py-1 rounded-md text-xs font-medium flex items-center gap-1">
+            {getCategoryIcon(category)}
+            {category}
+          </span>
+        </div>
+
+        {/* Progress bar if in progress */}
+        {progress > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/20">
+            <div 
+              className="h-full bg-emerald-500 transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
           </div>
+        )}
+      </div>
+
+      <CardContent className="p-6">
+        <div className="space-y-4">
+          {/* Title and Level */}
+          <div className="space-y-2">
+            <div className="flex items-start justify-between gap-2">
+              <h3 className="font-semibold text-gray-900 line-clamp-2 group-hover:text-emerald-600 transition-colors">
+                {title}
+              </h3>
+              <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getLevelColor(level)}`}>
+                {level}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600">{instructorName}</p>
+          </div>
+
+          {/* Stats */}
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1">
+                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                <span className="font-medium text-gray-700">{rating}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Users className="w-4 h-4" />
+                <span>{students}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="w-4 h-4" />
+                <span>{duration}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Progress if applicable */}
+          {progress > 0 && (
+            <div className="pt-2 border-t border-gray-100">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Progression</span>
+                <span className="font-medium text-emerald-600">{progress}%</span>
+              </div>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

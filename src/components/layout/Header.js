@@ -4,22 +4,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Button } from '../ui/button';
-import { Search, Bell, Menu, X, ChevronDown } from 'lucide-react';
+import { Search, Bell, Menu, X, ChevronDown, User } from 'lucide-react';
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isOnLightBackground, setIsOnLightBackground] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
-      
-      // Detect light background sections (adjust these values based on your page sections)
-      const isOnCTASection = scrollY > (window.innerHeight * 4); // Approximate position of CTA section
-      setIsOnLightBackground(scrollY > 20 || isOnCTASection);
+      setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -29,30 +23,25 @@ export default function Header() {
     <>
       <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'glass shadow-premium border-b border-gray-200/20' 
-          : 'bg-transparent'
+          ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-200' 
+          : 'bg-white/80 backdrop-blur-md'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-20">
+          <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative">
-                <Image
-                  src="/images/Gemini_Generated_Image_2e8hht2e.png"
-                  alt="MuslimInfopreneurs"
-                  width={44}
-                  height={44}
-                  className="rounded-xl transition-transform duration-300 group-hover:scale-110 shadow-glow"
-                />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary-500 to-primary-600 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
-              </div>
+              <Image
+                src="/images/Gemini_Generated_Image_2e8hht2e.png"
+                alt="MuslimInfopreneurs"
+                width={40}
+                height={40}
+                className="rounded-lg transition-transform duration-200 group-hover:scale-105"
+              />
               <div className="hidden sm:block">
-                <span className={`font-display font-bold text-xl tracking-tight ${
-                  isScrolled ? 'text-primary-600' : 'gradient-text'
-                }`}>
+                <span className="text-xl font-bold text-gray-900">
                   MuslimInfopreneurs
                 </span>
-                <div className="text-xs font-medium text-primary-500">Formation Islamique</div>
+                <div className="text-xs text-emerald-600 font-medium">Formation Business</div>
               </div>
             </Link>
 
@@ -60,18 +49,18 @@ export default function Header() {
             <nav className="hidden lg:flex items-center space-x-1">
               {[
                 { href: '/', label: 'Accueil', active: true },
-                { href: '/trainings', label: 'Formations' },
+                { href: '/formations', label: 'Formations' },
                 { href: '/categories', label: 'Catégories' },
-                { href: '/instructors', label: 'Instructeurs' },
-                { href: '/affiliate', label: 'Affiliation' }
+                { href: '/instructeurs', label: 'Instructeurs' },
+                { href: '/entreprise', label: 'Entreprise' }
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 hover:bg-primary-50 ${
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
                     item.active 
-                      ? 'text-primary-700 bg-primary-50 shadow-inner-glow' 
-                      : 'text-primary-600 hover:text-primary-700'
+                      ? 'text-emerald-600 bg-emerald-50' 
+                      : 'text-gray-700 hover:text-emerald-600 hover:bg-gray-50'
                   }`}
                 >
                   {item.label}
@@ -82,23 +71,20 @@ export default function Header() {
             {/* Right Section */}
             <div className="flex items-center space-x-3">
               {/* Search */}
-              <div className="relative">
+              <div className="relative hidden md:block">
                 <button 
                   onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className={`p-3 rounded-xl transition-all duration-300 hover:shadow-glow group ${
-                    isOnLightBackground ? 'hover:bg-primary-50' : 'hover:bg-white/10'
-                  }`}
+                  className="p-2 text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded-lg transition-colors"
                 >
-                  <Search className="w-5 h-5 text-primary-600 group-hover:text-primary-400 transition-colors" />
+                  <Search className="w-5 h-5" />
                 </button>
                 
-                {/* Search Dropdown */}
                 {isSearchOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-80 glass rounded-2xl p-4 animate-slide-down">
+                  <div className="absolute top-full right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border p-4 animate-in slide-in-from-top-2">
                     <input
                       type="text"
                       placeholder="Rechercher des formations..."
-                      className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus-premium"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
                       autoFocus
                     />
                   </div>
@@ -106,36 +92,36 @@ export default function Header() {
               </div>
               
               {/* Notifications */}
-              <button className={`p-3 rounded-xl transition-all duration-300 relative group hover:shadow-glow ${
-                isOnLightBackground ? 'hover:bg-primary-50' : 'hover:bg-white/10'
-              }`}>
-                <Bell className="w-5 h-5 text-primary-600 group-hover:text-primary-400 transition-colors" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-red-500 to-red-600 rounded-full animate-pulse-glow"></span>
+              <button className="relative p-2 text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded-lg transition-colors">
+                <Bell className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
               </button>
 
               {/* Auth Buttons */}
               <div className="hidden md:flex items-center space-x-3">
                 <Button 
                   variant="ghost" 
-                  className="btn-premium border-opacity-20 text-primary-600 hover:text-primary-700 hover:bg-primary-50 border-primary-300"
+                  className="text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
+                  asChild
                 >
-                  Connexion
+                  <Link href="/auth/signin">Connexion</Link>
                 </Button>
-                <Button className="bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600 shadow-glow hover:shadow-glow-lg btn-premium text-black">
-                  S'abonner
+                <Button 
+                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                  asChild
+                >
+                  <Link href="/auth/signup">Commencer</Link>
                 </Button>
               </div>
 
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`lg:hidden p-3 rounded-xl transition-all duration-300 ${
-                  isOnLightBackground ? 'hover:bg-primary-50' : 'hover:bg-white/10'
-                }`}
+                className="lg:hidden p-2 text-gray-600 hover:text-emerald-600 hover:bg-gray-50 rounded-lg transition-colors"
               >
                 {isMobileMenuOpen ? 
-                  <X className="w-5 h-5 text-primary-600" /> : 
-                  <Menu className="w-5 h-5 text-primary-600" />
+                  <X className="w-5 h-5" /> : 
+                  <Menu className="w-5 h-5" />
                 }
               </button>
             </div>
@@ -146,43 +132,38 @@ export default function Header() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden">
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-          <div className={`fixed top-20 left-4 right-4 rounded-2xl p-6 animate-slide-down ${
-            isOnLightBackground ? 'bg-white shadow-xl border border-gray-200' : 'glass'
-          }`}>
+          <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
+          <div className="fixed top-16 left-4 right-4 bg-white rounded-xl shadow-xl border p-6 animate-in slide-in-from-top-4">
             <nav className="space-y-4">
               {[
                 { href: '/', label: 'Accueil' },
-                { href: '/trainings', label: 'Formations' },
+                { href: '/formations', label: 'Formations' },
                 { href: '/categories', label: 'Catégories' },
-                { href: '/instructors', label: 'Instructeurs' },
-                { href: '/affiliate', label: 'Affiliation' }
+                { href: '/instructeurs', label: 'Instructeurs' },
+                { href: '/entreprise', label: 'Entreprise' }
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block px-4 py-3 rounded-xl font-medium transition-all duration-300 ${
-                    isOnLightBackground 
-                      ? 'text-primary-600 hover:bg-primary-50 hover:text-primary-700' 
-                      : 'text-white hover:bg-white/10'
-                  }`}
+                  className="block px-4 py-3 text-gray-700 hover:text-emerald-600 hover:bg-gray-50 rounded-lg font-medium transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
                 </Link>
               ))}
-              <div className={`pt-4 space-y-3 ${
-                isOnLightBackground ? 'border-t border-primary-200/30' : 'border-t border-white/20'
-              }`}>
-                <Button variant="ghost" className={`w-full justify-start ${
-                  isOnLightBackground 
-                    ? 'text-primary-600 hover:text-primary-700 hover:bg-primary-50' 
-                    : 'text-gray-300 hover:text-white hover:bg-white/10'
-                }`}>
-                  Connexion
+              <div className="pt-4 border-t border-gray-200 space-y-3">
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-start text-gray-700 hover:text-emerald-600"
+                  asChild
+                >
+                  <Link href="/auth/signin">Connexion</Link>
                 </Button>
-                <Button className="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-500 hover:to-primary-600">
-                  S'abonner
+                <Button 
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                  asChild
+                >
+                  <Link href="/auth/signup">Commencer</Link>
                 </Button>
               </div>
             </nav>
