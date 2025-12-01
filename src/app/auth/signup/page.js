@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '../../../components/ui/button';
@@ -52,7 +53,18 @@ export default function SignUp() {
       });
 
       if (response.ok) {
-        router.push('/auth/signin?message=Compte créé avec succès');
+        // Auto-login after successful registration
+        const result = await signIn('credentials', {
+          email: formData.email,
+          password: formData.password,
+          redirect: false,
+        });
+        
+        if (result?.ok) {
+          router.push('/');
+        } else {
+          router.push('/auth/signin?message=Compte créé avec succès');
+        }
       } else {
         const data = await response.json();
         setError(data.message || 'Une erreur est survenue');

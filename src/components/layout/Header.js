@@ -3,10 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
 import { Button } from '../ui/button';
 import { Search, Bell, Menu, X, ChevronDown, User } from 'lucide-react';
 
 export default function Header() {
+  const { data: session, status } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -99,19 +101,34 @@ export default function Header() {
 
               {/* Auth Buttons */}
               <div className="hidden md:flex items-center space-x-3">
-                <Button 
-                  variant="ghost" 
-                  className="text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
-                  asChild
-                >
-                  <Link href="/auth/signin">Connexion</Link>
-                </Button>
-                <Button 
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                  asChild
-                >
-                  <Link href="/auth/signup">Commencer</Link>
-                </Button>
+                {session ? (
+                  <>
+                    <span className="text-sm text-gray-700">Bonjour, {session.user?.name}</span>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => signOut()}
+                      className="text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
+                    >
+                      Déconnexion
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      className="text-gray-700 hover:text-emerald-600 hover:bg-gray-50"
+                      asChild
+                    >
+                      <Link href="/auth/signin">Connexion</Link>
+                    </Button>
+                    <Button 
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                      asChild
+                    >
+                      <Link href="/auth/signup">Commencer</Link>
+                    </Button>
+                  </>
+                )}
               </div>
 
               {/* Mobile Menu Button */}
@@ -152,19 +169,37 @@ export default function Header() {
                 </Link>
               ))}
               <div className="pt-4 border-t border-gray-200 space-y-3">
-                <Button 
-                  variant="ghost" 
-                  className="w-full justify-start text-gray-700 hover:text-emerald-600"
-                  asChild
-                >
-                  <Link href="/auth/signin">Connexion</Link>
-                </Button>
-                <Button 
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
-                  asChild
-                >
-                  <Link href="/auth/signup">Commencer</Link>
-                </Button>
+                {session ? (
+                  <>
+                    <div className="px-4 py-2 text-sm text-gray-700">Bonjour, {session.user?.name}</div>
+                    <Button 
+                      variant="ghost" 
+                      onClick={() => {
+                        signOut();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="w-full justify-start text-gray-700 hover:text-emerald-600"
+                    >
+                      Déconnexion
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start text-gray-700 hover:text-emerald-600"
+                      asChild
+                    >
+                      <Link href="/auth/signin" onClick={() => setIsMobileMenuOpen(false)}>Connexion</Link>
+                    </Button>
+                    <Button 
+                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                      asChild
+                    >
+                      <Link href="/auth/signup" onClick={() => setIsMobileMenuOpen(false)}>Commencer</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>

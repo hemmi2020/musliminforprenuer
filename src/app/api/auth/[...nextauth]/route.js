@@ -3,6 +3,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import connectDB from '../../../../lib/db';
 import User from '../../../../lib/models/User';
+import { localDB } from '../../../../lib/localdb';
 
 const authOptions = {
   providers: [
@@ -10,37 +11,58 @@ const authOptions = {
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
-        password: { label: 'Mot de passe', type: 'password' }
+        password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        await connectDB();
-        
-        const user = await User.findOne({ email: credentials.email });
-        if (!user || !user.hashedPassword) {
-          return null;
+        try {
+          await connectDB();
+          
+          const user = await User.findOne({ email: credentials.email });
+          if (!user || !user.hashedPassword) {
+            return null;
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.hashedPassword
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: user._id.toString(),
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
+        } catch (error) {
+          const user = localDB.findUser(credentials.email);
+          if (!user || !user.hashedPassword) {
+            return null;
+          }
+
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.hashedPassword
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: user._id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          };
         }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
-
-        if (!isPasswordValid) {
-          return null;
-        }
-
-        return {
-          id: user._id.toString(),
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          subscriptionStatus: user.subscriptionStatus,
-          subscriptionType: user.subscriptionType,
-        };
       }
     })
   ],
@@ -51,8 +73,6 @@ const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
-        token.subscriptionStatus = user.subscriptionStatus;
-        token.subscriptionType = user.subscriptionType;
       }
       return token;
     },
@@ -60,15 +80,12 @@ const authOptions = {
       if (token) {
         session.user.id = token.sub;
         session.user.role = token.role;
-        session.user.subscriptionStatus = token.subscriptionStatus;
-        session.user.subscriptionType = token.subscriptionType;
       }
       return session;
     },
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
