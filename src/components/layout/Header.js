@@ -101,7 +101,9 @@ export default function Header() {
 
               {/* Auth Buttons */}
               <div className="hidden md:flex items-center space-x-3">
-                {session ? (
+                {status === 'loading' ? (
+                  <div className="w-20 h-8 bg-gray-200 rounded animate-pulse"></div>
+                ) : session ? (
                   <>
                     <span className="text-sm text-gray-700">Bonjour, {session.user?.name}</span>
                     <Button 
@@ -169,7 +171,9 @@ export default function Header() {
                 </Link>
               ))}
               <div className="pt-4 border-t border-gray-200 space-y-3">
-                {session ? (
+                {status === 'loading' ? (
+                  <div className="w-full h-8 bg-gray-200 rounded animate-pulse"></div>
+                ) : session ? (
                   <>
                     <div className="px-4 py-2 text-sm text-gray-700">Bonjour, {session.user?.name}</div>
                     <Button 
